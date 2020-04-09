@@ -1,0 +1,33 @@
+class Solution {
+public:
+    long findPath(int i, int j, int m, int n, map< pair<int, int >, long >& mp) {
+        if (i >= m || j >= n) {
+            return 0;
+        }
+        if (i==m-1) {
+            mp[make_pair(i,j)] = 1;
+            return 1;
+        }
+        if (j==n-1) {
+            mp[make_pair(i,j)] = 1;
+            return 1;
+        }
+        if (mp.find(make_pair(i,j)) != mp.end()) {
+            return mp[make_pair(i,j)];
+        }
+        long paths1 = (mp.find(make_pair(i+1,j)) != mp.end()) ? mp[make_pair(i+1,j)] : findPath(i+1,j,m,n,mp);
+        long paths2 = (mp.find(make_pair(i,j+1)) != mp.end()) ? mp[make_pair(i,j+1)] : findPath(i,j+1,m,n,mp);
+        mp[make_pair(i,j)] = paths1 + paths2;
+        cout << paths1 << ' ' << paths2 << endl;
+        return paths1+paths2;
+    }
+    
+    int uniquePaths(int m, int n) {
+        map<pair<int,int>, long> mp;
+        if (m==1 and n==1) {
+            return 1;
+        }
+        long total = findPath(0,0,m,n, mp);
+        return total;
+    }
+};
